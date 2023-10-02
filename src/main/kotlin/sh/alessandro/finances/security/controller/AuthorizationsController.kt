@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import sh.alessandro.finances.security.domain.User
+import sh.alessandro.finances.security.domain.models.User
 import sh.alessandro.finances.security.domain.service.HashService
 import sh.alessandro.finances.security.domain.service.TokenService
 import sh.alessandro.finances.security.domain.service.UserService

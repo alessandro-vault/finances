@@ -1,9 +1,13 @@
-package sh.alessandro.finances.security.domain
+package sh.alessandro.finances.security.domain.models
 
 import jakarta.persistence.*
+import lombok.AllArgsConstructor
+import lombok.NoArgsConstructor
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 data class User (
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =  "user_id_seq")

@@ -1,7 +1,7 @@
 package sh.alessandro.finances.security.service
 
 import org.springframework.stereotype.Service
-import sh.alessandro.finances.security.domain.User
+import sh.alessandro.finances.security.domain.models.User
 import sh.alessandro.finances.security.domain.persistence.UserRepository
 import sh.alessandro.finances.security.domain.service.UserService
 

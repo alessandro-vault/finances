@@ -1,6 +1,6 @@
 package sh.alessandro.finances.security.domain.service
 
-import sh.alessandro.finances.security.domain.User
+import sh.alessandro.finances.security.domain.models.User
 
 interface UserService {
     fun findById(id: Long): User?

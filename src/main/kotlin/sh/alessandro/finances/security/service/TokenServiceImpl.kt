@@ -2,7 +2,7 @@ package sh.alessandro.finances.security.service
 
 import org.springframework.security.oauth2.jwt.*
 import org.springframework.stereotype.Service
-import sh.alessandro.finances.security.domain.User
+import sh.alessandro.finances.security.domain.models.User
 import sh.alessandro.finances.security.domain.service.TokenService
 import java.time.Instant
 import java.time.temporal.ChronoUnit
