@@ -1,11 +1,9 @@
 package sh.alessandro.finances
 
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
-
-@SpringBootTest
-class FinancesApplicationTests {
-    @Test
-    fun contextLoads() {
-    }
-}
+import org.junit.platform.suite.api.SelectPackages
+import org.junit.platform.suite.api.Suite
+import org.junit.platform.suite.api.SuiteDisplayName
+@Suite
+@SuiteDisplayName("Finances Api Suite")
+@SelectPackages("sh.alessandro.finances.api")
+class FinancesApplicationTests
