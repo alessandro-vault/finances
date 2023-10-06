@@ -2,12 +2,14 @@ package sh.alessandro.finances.api.calculator.domain.models
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.*
+import sh.alessandro.finances.api.calculator.domain.enums.Currency
+import sh.alessandro.finances.api.calculator.domain.enums.RateType
 import java.util.*
 
 
 @Entity
 @Table(name = "loans")
-data class Loan (
+data class Loan(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -29,10 +31,10 @@ data class Loan (
     var rate: Float,
 
     @Column(name = "rate_type")
-    var rateType: sh.alessandro.finances.api.calculator.domain.enums.RateType = sh.alessandro.finances.api.calculator.domain.enums.RateType.EFFECTIVE,
+    var rateType: RateType = RateType.EFFECTIVE,
 
     @Column(name = "currency")
-    var currency: sh.alessandro.finances.api.calculator.domain.enums.Currency = sh.alessandro.finances.api.calculator.domain.enums.Currency.PEN,
+    var currency: Currency = Currency.PEN,
 
     @Column(name = "term")
     @Min(value = 1)
@@ -50,9 +52,6 @@ data class Loan (
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     var client: Client? = null,
-
-    @OneToOne(mappedBy = "loan", cascade = [CascadeType.ALL])
-    var plan: Plan? = null,
 )
 {
     fun downPayment(): Double {

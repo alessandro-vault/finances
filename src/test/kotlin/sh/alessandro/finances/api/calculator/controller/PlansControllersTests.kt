@@ -23,7 +23,11 @@ class PlansControllersTests {
                 {
                     "loanAmount": 20000.0,
                     "downPaymentPercentage": 10.0,
-                    "interestRate": 13.57
+                    "interestRate": 13.57,
+                    "loanTerm": 24,
+                    "currency": "PEN",
+                    "portage": 5.0,
+                    "loanDate": "2023-08-10"
                 }
             """
         }.andExpect {
