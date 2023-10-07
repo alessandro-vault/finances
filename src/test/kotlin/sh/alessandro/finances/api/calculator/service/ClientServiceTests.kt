@@ -45,8 +45,6 @@ class ClientServiceTests {
         verify { userService.saveOne(any(User::class)) }
         verify { clientRepository.save(any(Client::class)) }
 
-        println(createdClient)
-
         // Assert
         assertEquals(savedClient, createdClient)
     }

@@ -52,10 +52,10 @@ data class EntryDataDto(
 ) {
     fun getLoan() : Loan {
         return Loan(
-            initialAmount = loanAmount,
+            totalAmount = loanAmount,
             term = loanTerm.toUShort(),
             downPaymentPercentage = downPaymentPercentage.toFloat(),
-            rate = interestRate.toFloat(),
+            rate = interestRate / 100,
             rateType = rateType,
             currency = currency,
             date = convertDate(loanDate)

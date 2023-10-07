@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.apache.poi:poi:5.2.4")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     testImplementation("org.junit.jupiter:junit-jupiter")

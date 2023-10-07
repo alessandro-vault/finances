@@ -14,13 +14,33 @@ class PaymentServiceImpl(
         var periods = plan.loan?.term?.toInt()
         var payments = mutableListOf<Payment>()
 
-        payments.add(calculator.buildFirstPayment(plan))
+        payments.add(this.buildFirstPayment(plan, plan.postage))
 
         return payments
     }
 
     fun getPrevPayment(plan: Plan, index: Int): Payment? {
-        return plan.payments?.lastOrNull()
+        return plan.payments.lastOrNull()
+    }
+
+    fun buildFirstPayment(plan: Plan, postage: Double): Payment {
+        val loan = plan.loan!!
+        val interest = calculator.calcInterest(
+            loan.totalDebt(),
+            plan.monthlyRate()
+        )
+
+        return Payment(
+            number = 1,
+            // payment date will be plan.loan.date + 30 days
+            paymentDate = loan.date,
+            amortization = 0.0,
+            interest = interest,
+            lifeInsurance = 18000.00 * 0.015 / 100,
+            carInsurance = loan.totalAmount * 0.10 / 100,
+            postage = postage,
+            balance = 0.0,
+        )
     }
 
 }

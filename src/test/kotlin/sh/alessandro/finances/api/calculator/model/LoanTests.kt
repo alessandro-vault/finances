@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.TestComponent
 import sh.alessandro.finances.api.calculator.domain.models.Loan
-import java.util.*
+import java.time.LocalDate
 
 @TestComponent
 class LoanTests {
@@ -16,16 +16,16 @@ class LoanTests {
     fun setUp() {
         loan = Loan(
             id = 1L,
-            initialAmount = 20000.0,
+            totalAmount = 20000.0,
             downPaymentPercentage = 10.0F,
-            rate = 13.57F,
+            rate = 13.57,
             term = 2u,
-            date = Date()
+            date = LocalDate.now()
         )
     }
 
     @Test
     fun testCalculateDownPayment() {
-        assertEquals(2000.0, loan.downPayment())
+        assertEquals(18000.00, loan.totalDebt())
     }
 }

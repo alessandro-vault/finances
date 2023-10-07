@@ -3,6 +3,7 @@ package sh.alessandro.finances.api.calculator.domain.models
 import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
+import java.time.LocalDate
 import java.util.*
 
 @Entity
@@ -18,7 +19,7 @@ data class Payment (
     var number: Int,
 
     @Column(name = "date")
-    var paymentDate: Date,
+    var paymentDate: LocalDate,
 
     @Column(name = "amortization")
     var amortization: Double,

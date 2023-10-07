@@ -3,7 +3,10 @@ package sh.alessandro.finances.api.calculator.domain.models
 import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
+import org.apache.poi.ss.formula.functions.FinanceLib
+import sh.alessandro.finances.api.calculator.domain.enums.InsuranceType
 import java.util.*
+import kotlin.math.pow
 
 @Entity
 @Table(name = "plans")
@@ -30,4 +33,27 @@ data class Plan(
     @OneToOne(mappedBy = "plan", cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "loan_id")
     var loan: Loan? = null,
-    )
+    ) {
+
+    fun monthlyRate(): Double {
+        return ((1 + this.loan?.rate!!).pow(30.0 / 360) - 1)
+    }
+
+    fun monthlyPayment(): Double {
+        return FinanceLib.pmt(
+            this.monthlyRate() + this.lifeInsurance(),
+            this.loan?.term!!.toDouble(),
+            -this.loan?.totalDebt()!!,
+            0.0,
+            false
+        ) + this.postage + (this.carInsurance())
+    }
+
+    private fun lifeInsurance(): Double {
+        return this.insurances.find { it.type == InsuranceType.LIFE }?.percentage!!
+    }
+
+    private fun carInsurance(): Double {
+        return this.insurances.find { it.type == InsuranceType.CAR }?.percentage!! * this.loan?.totalAmount!!
+    }
+}

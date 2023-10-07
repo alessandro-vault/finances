@@ -7,8 +7,7 @@ import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
 import sh.alessandro.finances.api.calculator.domain.enums.Currency
 import sh.alessandro.finances.api.calculator.domain.enums.RateType
-import java.util.*
-import kotlin.math.pow
+import java.time.LocalDate
 
 
 @Entity
@@ -22,8 +21,8 @@ data class Loan(
 
     @Column(name = "initial_amount")
     @NotEmpty
-    @Min(value = 0) @Max(value = 100)
-    var initialAmount: Double,
+    @Min(value = 0)
+    var totalAmount: Double,
 
     @Column(name = "down_payment")
     @Min(value = 5) @Max(value = 99)
@@ -32,7 +31,7 @@ data class Loan(
     @Column(name = "rate")
     @NotEmpty @NotNull
     @DecimalMin(value = "0.0", inclusive = false)
-    var rate: Float,
+    var rate: Double,
 
     @Column(name = "rate_type")
     var rateType: RateType = RateType.EFFECTIVE,
@@ -46,11 +45,11 @@ data class Loan(
 
     @Column(name = "date")
     @NotNull
-    var date: Date,
+    var date: LocalDate,
 
     @Column(name = "created_at")
     @JsonIgnore
-    var createdAt: Date = Date(),
+    var createdAt: LocalDate = LocalDate.now(),
 
     //Relationships
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,16 +63,11 @@ data class Loan(
     var plan: Plan? = null,
 )
 {
-    fun downPayment(): Double {
-        return (this.initialAmount * (this.downPaymentPercentage.toDouble() / 100))
+    fun downPaymentAmount(): Double {
+        return (this.totalAmount * (this.downPaymentPercentage.toDouble() / 100))
     }
 
-    fun loanAmount(): Double {
-        return (this.initialAmount - this.downPayment())
+    fun totalDebt(): Double {
+        return (this.totalAmount - this.downPaymentAmount())
     }
-
-    fun monthlyRate(): Float {
-        return (1 + this.rate / 100).pow(30/360) - 1
-    }
-
 }
