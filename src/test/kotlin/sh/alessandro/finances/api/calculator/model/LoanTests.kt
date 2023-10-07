@@ -4,16 +4,17 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.TestComponent
+import sh.alessandro.finances.api.calculator.domain.models.Loan
 import java.util.*
 
 @TestComponent
 class LoanTests {
 
-    private lateinit var loan : sh.alessandro.finances.api.calculator.domain.models.Loan
+    private lateinit var loan : Loan
 
     @BeforeEach
     fun setUp() {
-        loan = sh.alessandro.finances.api.calculator.domain.models.Loan(
+        loan = Loan(
             id = 1L,
             initialAmount = 20000.0,
             downPaymentPercentage = 10.0F,

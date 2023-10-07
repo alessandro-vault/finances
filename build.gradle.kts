@@ -31,7 +31,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("org.springframework.boot:spring-boot-test-autoconfigure")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.junit.platform:junit-platform-suite")
 

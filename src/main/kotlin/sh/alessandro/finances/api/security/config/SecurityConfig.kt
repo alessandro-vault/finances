@@ -26,6 +26,7 @@ class SecurityConfig(
         http.authorizeHttpRequests {  auth ->
             auth
                 .requestMatchers(HttpMethod.GET, "/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/client/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/**").authenticated()
                 .anyRequest().permitAll()

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor
 import lombok.Data
 import lombok.NoArgsConstructor
 import sh.alessandro.finances.api.calculator.domain.enums.Currency
+import sh.alessandro.finances.api.calculator.domain.enums.RateType
 
 
 @NoArgsConstructor
@@ -27,6 +28,10 @@ data class EntryDataDto(
     @JsonProperty("loanTerm")
     @NotNull
     val loanTerm: Int,
+
+    @JsonProperty("rateType")
+    @NotNull
+    val rateType: RateType,
 
     @JsonProperty("currency")
     @NotNull

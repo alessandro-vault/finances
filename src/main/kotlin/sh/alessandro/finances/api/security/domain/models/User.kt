@@ -11,8 +11,8 @@ import java.util.*
 @AllArgsConstructor
 data class User (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: UUID? = null,
 
     @Column(unique = true, nullable = false)
     var username: String = "",
@@ -22,8 +22,4 @@ data class User (
 
     @Column(name = "created_at")
     var createdAt: Date = Date(),
-
-    @OneToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    var client: sh.alessandro.finances.api.calculator.domain.models.Client? = null
 )

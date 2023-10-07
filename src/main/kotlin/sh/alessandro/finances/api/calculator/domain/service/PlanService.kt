@@ -1,4 +1,4 @@
-package sh.alessandro.finances.api.calculator.domain.models.service
+package sh.alessandro.finances.api.calculator.domain.service
 
 import sh.alessandro.finances.api.calculator.domain.models.Plan
 import sh.alessandro.finances.api.calculator.dto.EntryDataDto

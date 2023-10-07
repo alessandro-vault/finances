@@ -4,12 +4,13 @@ import org.springframework.stereotype.Service
 import sh.alessandro.finances.api.security.domain.models.User
 import sh.alessandro.finances.api.security.domain.persistence.UserRepository
 import sh.alessandro.finances.api.security.domain.service.UserService
+import java.util.*
 
 @Service
 class UserServiceImpl(
     private val userRepository: UserRepository
 ) : UserService{
-    override fun findById(id: Long): User? {
+    override fun findById(id: UUID): User? {
         return userRepository.findById(id).orElse(null)
     }
 

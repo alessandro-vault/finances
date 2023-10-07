@@ -1,24 +1,25 @@
 package sh.alessandro.finances.api.security.service
 
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import sh.alessandro.finances.api.security.domain.models.User
 import sh.alessandro.finances.api.security.domain.persistence.UserRepository
+import java.util.*
 
 class UserServiceTests {
 
-    private val userRepository = mock(UserRepository::class.java)
+    private val userRepository = mockk<UserRepository>()
 
     private val userService = UserServiceImpl(userRepository)
 
     @Test
     fun testFindById() {
-        val userId = 1L
+        val userId = UUID.randomUUID()
         val user = User(id = userId, username = "test", password = "test")
 
-        `when`(userRepository.findById(userId)).thenReturn(java.util.Optional.of(user))
+        every { userRepository.findById(userId) } returns Optional.of(user)
 
         val result = userService.findById(userId)
 
@@ -29,9 +30,9 @@ class UserServiceTests {
     @Test
     fun testFindByUserName() {
         val username = "test"
-        val user = User(id = 1L, username = username, password = "test")
+        val user = User(id = UUID.randomUUID(), username = username, password = "test")
 
-        `when`(userRepository.findByUsername(username)).thenReturn(user)
+        every { userRepository.findByUsername(username) } returns user
 
         val result = userService.findByUserName(username)
 
@@ -42,7 +43,7 @@ class UserServiceTests {
     fun testExistsByUsername() {
         val username = "test"
 
-        `when`(userRepository.existsByUsername(username)).thenReturn(true)
+        every { userRepository.existsByUsername(username) } returns true
 
         val result = userService.existsByUsername(username)
 
@@ -51,9 +52,9 @@ class UserServiceTests {
 
     @Test
     fun testSaveOne() {
-        val user = User(id = 1L, username = "test", password = "test")
+        val user = User(id = UUID.randomUUID(), username = "test", password = "test")
 
-        `when`(userRepository.save(user)).thenReturn(user)
+        every { userRepository.save(user) } returns user
 
         val result = userService.saveOne(user)
 
@@ -64,7 +65,7 @@ class UserServiceTests {
     fun testFindByUserName_UsernameNotFound() {
         val username = "test"
 
-        `when`(userRepository.findByUsername(username)).thenReturn(null)
+        every { userRepository.findByUsername(username) } returns null
 
         val result = userService.findByUserName(username)
 

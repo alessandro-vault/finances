@@ -1,5 +1,6 @@
 package sh.alessandro.finances.api.calculator.domain.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import jakarta.validation.constraints.*
 import sh.alessandro.finances.api.calculator.domain.enums.Currency
@@ -16,13 +17,11 @@ data class Loan(
 
     @Column(name = "initial_amount")
     @NotEmpty
-    @Min(value = 0)
-    @Max(value = 100)
+    @Min(value = 0) @Max(value = 100)
     var initialAmount: Double,
 
     @Column(name = "down_payment")
-    @Min(value = 5)
-    @Max(value = 99)
+    @Min(value = 5) @Max(value = 99)
     var downPaymentPercentage: Float,
 
     @Column(name = "rate")
@@ -45,13 +44,19 @@ data class Loan(
     var date: Date,
 
     @Column(name = "created_at")
+    @JsonIgnore
     var createdAt: Date = Date(),
 
     //Relationships
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     var client: Client? = null,
+
+    @OneToOne
+    @JoinColumn(name = "plan_id")
+    @JsonIgnore
+    var plan: Plan? = null,
 )
 {
     fun downPayment(): Double {

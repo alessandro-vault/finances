@@ -6,6 +6,7 @@ import sh.alessandro.finances.api.security.domain.models.User
 import sh.alessandro.finances.api.security.domain.service.TokenService
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import java.util.*
 
 @Service
 class TokenServiceImpl(
@@ -29,7 +30,7 @@ class TokenServiceImpl(
     override fun parseToken(token: String): User? {
         return try {
             val jwt = jwtDecoder.decode(token)
-            val userId = jwt.claims["userId"] as Long
+            val userId = jwt.claims["userId"] as UUID
             userService.findById(userId)
         } catch (e: Exception) {
             null

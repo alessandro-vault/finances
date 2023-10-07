@@ -1,16 +1,17 @@
-package sh.alessandro.finances.api.calculator.repository
+package sh.alessandro.finances.api.calculator.persistence.repository
 
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import sh.alessandro.finances.api.calculator.domain.repositories.LoanRepository
 import java.util.*
 
 class LoanRepositoryTests {
 
     @Test
     fun testFindById() {
-        val loanRepository = mock(sh.alessandro.finances.api.calculator.domain.persistence.LoanRepository::class.java)
+        val loanRepository = mockk<LoanRepository>()
 
         val loan = sh.alessandro.finances.api.calculator.domain.models.Loan(
             id = 1L,
@@ -21,7 +22,7 @@ class LoanRepositoryTests {
             date = Date(),
         )
 
-        `when`(loanRepository.findById(1L)).thenReturn(Optional.of(loan))
+        every { loanRepository.findById(1L) } returns Optional.of(loan)
 
         val foundLoan = loanRepository.findById(1L).orElse(null)
 
