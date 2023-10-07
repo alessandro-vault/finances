@@ -28,7 +28,17 @@ class PlansControllersTests {
                     "loanTerm": 24,
                     "currency": "PEN",
                     "portage": 5.0,
-                    "loanDate": "2023-08-10"
+                    "loanDate": "2023-08-10",
+                    "insurances": [
+                        {
+                            "type": "LIFE",
+                            "percentage": 0.015
+                        },
+                        {
+                            "type": "CAR",
+                            "percentage": 0.1
+                        }
+                    ]
                 }
             """
         }.andExpect {

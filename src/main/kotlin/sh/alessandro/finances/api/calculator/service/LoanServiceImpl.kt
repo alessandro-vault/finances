@@ -4,9 +4,6 @@ import org.springframework.stereotype.Service
 import sh.alessandro.finances.api.calculator.domain.models.Loan
 import sh.alessandro.finances.api.calculator.domain.repositories.LoanRepository
 import sh.alessandro.finances.api.calculator.domain.service.LoanService
-import sh.alessandro.finances.api.calculator.dto.EntryDataDto
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Service
 class LoanServiceImpl(
@@ -17,23 +14,5 @@ class LoanServiceImpl(
     }
     override fun saveOne(loan: Loan): Loan {
         return loanRepository.save(loan)
-    }
-
-    companion object {
-        fun buildLoanFromEntryData(data: EntryDataDto) : Loan {
-            return Loan(
-                initialAmount = data.loanAmount,
-                term = data.loanTerm.toUShort(),
-                downPaymentPercentage = data.downPaymentPercentage.toFloat(),
-                rate = data.interestRate.toFloat(),
-                rateType = data.rateType,
-                currency = data.currency,
-                date = convertDate(data.loanDate)
-            )
-        }
-        private fun convertDate(date: String): Date {
-            val formatter = SimpleDateFormat("yyyy-MM-dd")
-            return formatter.parse(date)
-        }
     }
 }

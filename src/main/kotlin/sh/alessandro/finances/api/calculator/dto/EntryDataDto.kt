@@ -7,6 +7,8 @@ import lombok.Data
 import lombok.NoArgsConstructor
 import sh.alessandro.finances.api.calculator.domain.enums.Currency
 import sh.alessandro.finances.api.calculator.domain.enums.RateType
+import sh.alessandro.finances.api.calculator.domain.models.Loan
+import sh.alessandro.finances.api.calculator.shared.Util.Companion.convertDate
 
 
 @NoArgsConstructor
@@ -43,5 +45,20 @@ data class EntryDataDto(
 
     @JsonProperty("loanDate")
     @NotNull
-    val loanDate: String
-)
+    val loanDate: String,
+
+    @JsonProperty("insurances")
+    val insurances: List<InsuranceDto>,
+) {
+    fun getLoan() : Loan {
+        return Loan(
+            initialAmount = loanAmount,
+            term = loanTerm.toUShort(),
+            downPaymentPercentage = downPaymentPercentage.toFloat(),
+            rate = interestRate.toFloat(),
+            rateType = rateType,
+            currency = currency,
+            date = convertDate(loanDate)
+        )
+    }
+}

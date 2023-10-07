@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor
 import sh.alessandro.finances.api.calculator.domain.enums.Currency
 import sh.alessandro.finances.api.calculator.domain.enums.RateType
 import java.util.*
+import kotlin.math.pow
 
 
 @Entity
@@ -57,7 +58,7 @@ data class Loan(
     @JsonIgnore
     var client: Client? = null,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "plan_id")
     @JsonIgnore
     var plan: Plan? = null,
@@ -65,6 +66,14 @@ data class Loan(
 {
     fun downPayment(): Double {
         return (this.initialAmount * (this.downPaymentPercentage.toDouble() / 100))
+    }
+
+    fun loanAmount(): Double {
+        return (this.initialAmount - this.downPayment())
+    }
+
+    fun monthlyRate(): Float {
+        return (1 + this.rate / 100).pow(30/360) - 1
     }
 
 }

@@ -11,11 +11,17 @@ import java.util.*
 @NoArgsConstructor
 data class Payment (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: UUID? = null,
+
+    @Column(name = "number")
+    var number: Int,
 
     @Column(name = "date")
-    var date: Date,
+    var paymentDate: Date,
+
+    @Column(name = "amortization")
+    var amortization: Double,
 
     @Column(name = "interest")
     var interest: Double,
@@ -25,6 +31,12 @@ data class Payment (
 
     @Column(name = "car_insurance")
     var carInsurance: Double,
+
+    @Column(name = "postage")
+    var postage: Double,
+
+    @Column(name = "balance")
+    var balance: Double,
 
     @Column(name = "created_at")
     var createdAt: Date = Date(),

@@ -21,13 +21,13 @@ data class Plan(
     var createdAt: Date = Date(),
 
     // Relationships
-    @OneToMany(mappedBy = "plan", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "plan", cascade = [CascadeType.ALL], orphanRemoval = true)
     var insurances: List<Insurance> = listOf(),
 
     @OneToMany(mappedBy = "plan", cascade = [CascadeType.ALL])
     var payments: List<Payment> = listOf(),
 
-    @OneToOne()
+    @OneToOne(mappedBy = "plan", cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "loan_id")
     var loan: Loan? = null,
     )
