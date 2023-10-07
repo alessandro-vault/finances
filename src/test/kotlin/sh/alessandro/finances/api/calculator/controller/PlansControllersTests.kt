@@ -24,6 +24,7 @@ class PlansControllersTests {
                     "loanAmount": 20000.0,
                     "downPaymentPercentage": 10.0,
                     "interestRate": 13.57,
+                    "rateType": "NOMINAL",
                     "loanTerm": 24,
                     "currency": "PEN",
                     "portage": 5.0,
@@ -31,7 +32,24 @@ class PlansControllersTests {
                 }
             """
         }.andExpect {
-            status { isCreated() }
+            status {
+                isCreated()
+            }
+        }
+    }
+
+    @Test
+    fun createPlan_WithWrongPayload() {
+        mockMvc.post("/api/v1/plans") {
+            contentType = MediaType.APPLICATION_JSON
+            content = """
+                {
+                    "loanAmount": 20000.0,
+                    "downPaymentPercentage": 10.0,
+                }
+            """
+        }.andExpect {
+            status { isBadRequest() }
         }
     }
 }

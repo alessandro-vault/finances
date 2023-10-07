@@ -7,8 +7,8 @@ import java.util.*
 
 @Entity
 @Table(name = "payments")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 data class Payment (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

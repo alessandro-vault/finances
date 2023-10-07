@@ -3,6 +3,8 @@ package sh.alessandro.finances.api.calculator.domain.models
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import jakarta.validation.constraints.*
+import lombok.AllArgsConstructor
+import lombok.NoArgsConstructor
 import sh.alessandro.finances.api.calculator.domain.enums.Currency
 import sh.alessandro.finances.api.calculator.domain.enums.RateType
 import java.util.*
@@ -10,6 +12,8 @@ import java.util.*
 
 @Entity
 @Table(name = "loans")
+@AllArgsConstructor
+@NoArgsConstructor
 data class Loan(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,8 +8,8 @@ import java.util.*
 
 @Entity
 @Table(name = "grace_periods")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 data class GracePeriod (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

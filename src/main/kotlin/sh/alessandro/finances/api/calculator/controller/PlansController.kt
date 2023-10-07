@@ -20,13 +20,12 @@ class PlansController(
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
     fun createPlan(@RequestBody payload: EntryDataDto): ResponseEntity<Map<String, Any>> {
-        val plan = planService.saveOneFromEntryData(payload)
-        val response = mapOf(
-            "message" to "Successfully created plan",
-            "plan" to plan
-        )
-        return ResponseEntity(response, HttpStatus.CREATED)
+        return try {
+            val plan = planService.saveOneFromEntryData(payload)
+            ResponseEntity(mapOf("plan" to plan), HttpStatus.CREATED)
+        } catch (e: Exception) {
+            ResponseEntity(mapOf("error" to e), HttpStatus.CREATED)
+        }
     }
 }

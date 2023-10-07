@@ -8,8 +8,8 @@ import sh.alessandro.finances.api.security.domain.models.User
 
 @Entity
 @Table(name = "clients")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 data class Client(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
