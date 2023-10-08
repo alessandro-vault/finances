@@ -1,9 +1,11 @@
 package sh.alessandro.finances.api.calculator.domain.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
 import org.apache.poi.ss.formula.functions.FinanceLib
+import org.apache.poi.ss.formula.functions.Irr
 import sh.alessandro.finances.api.calculator.domain.enums.InsuranceType
 import java.util.*
 import kotlin.math.pow
@@ -18,6 +20,7 @@ data class Plan(
     val id: UUID? = null,
 
     @Column(name = "postage")
+    @JsonIgnore
     var postage: Double,
 
     @Column(name = "created_at")
@@ -46,14 +49,22 @@ data class Plan(
             -this.loan?.totalDebt()!!,
             0.0,
             false
-        ) + this.postage + (this.carInsurance())
+        ) + this.postage + (this.carInsurance() * this.loan?.totalAmount!!)
     }
 
-    private fun lifeInsurance(): Double {
+    fun lifeInsurance(): Double {
         return this.insurances.find { it.type == InsuranceType.LIFE }?.percentage!!
     }
 
-    private fun carInsurance(): Double {
-        return this.insurances.find { it.type == InsuranceType.CAR }?.percentage!! * this.loan?.totalAmount!!
+    fun carInsurance(): Double {
+        return this.insurances.find { it.type == InsuranceType.CAR }?.percentage!!
+    }
+
+    fun irr(): Double {
+        return Irr.irr(
+            Array(25) {
+                if (it == 0) this.loan?.totalDebt()!! else -this.monthlyPayment()
+            }.toDoubleArray()
+        )
     }
 }

@@ -55,7 +55,7 @@ data class EntryDataDto(
             totalAmount = loanAmount,
             term = loanTerm.toUShort(),
             downPaymentPercentage = downPaymentPercentage.toFloat(),
-            rate = interestRate / 100,
+            rate = interestRate,
             rateType = rateType,
             currency = currency,
             date = convertDate(loanDate)

@@ -3,10 +3,10 @@ package sh.alessandro.finances.api.calculator.controller
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import sh.alessandro.finances.api.calculator.domain.models.Plan
 import sh.alessandro.finances.api.calculator.domain.service.PaymentService
 import sh.alessandro.finances.api.calculator.domain.service.PlanService
 import sh.alessandro.finances.api.calculator.dto.EntryDataDto
+import sh.alessandro.finances.api.calculator.dto.ShowPlanDto
 import java.util.*
 
 @RestController
@@ -17,8 +17,30 @@ class PlansController(
 ) {
 
     @GetMapping("/{id}")
-    fun getPlan(@PathVariable id: UUID): Plan {
-        return planService.getOne(id)
+    fun getPlan(@PathVariable id: UUID): ResponseEntity<Map<String, Any>> {
+        return try {
+            ResponseEntity(
+                mapOf("plan" to ShowPlanDto(planService.getOne(id)))
+                , HttpStatus.OK
+            )
+        } catch (e: Exception) {
+            ResponseEntity(
+                mapOf("message" to "resource not found")
+                , HttpStatus.NOT_FOUND
+            )
+        }
+    }
+
+    @GetMapping("/{id}/stats")
+    fun getPlanStats(@PathVariable id: UUID): ResponseEntity<Map<String, Any>> {
+        return try {
+            ResponseEntity(
+                mapOf("stats for plan" to ShowPlanDto(planService.getOne(id)).getStats()),
+                HttpStatus.OK
+            )
+        } catch (e: Exception) {
+            ResponseEntity(mapOf("message" to "resource not found"), HttpStatus.NOT_FOUND)
+        }
     }
 
     @PostMapping()
@@ -27,7 +49,7 @@ class PlansController(
             val plan = planService.saveOneFromEntryData(payload)
             ResponseEntity(mapOf("plan" to plan), HttpStatus.CREATED)
         } catch (e: Exception) {
-            ResponseEntity(mapOf("error" to e), HttpStatus.CREATED)
+            ResponseEntity(mapOf("error" to e), HttpStatus.UNPROCESSABLE_ENTITY)
         }
     }
 
@@ -35,10 +57,13 @@ class PlansController(
     fun createPayments(@PathVariable id: UUID): ResponseEntity<Map<String, Any>> {
         return try {
             val plan = planService.getOne(id)
-            val payments = paymentService.createPayments(plan)
+            if (plan.payments.isNotEmpty()) {
+                ResponseEntity(mapOf("payments" to plan.payments), HttpStatus.OK)
+            }
+            val payments = paymentService.createMany(plan)
             ResponseEntity(mapOf("payments" to payments), HttpStatus.CREATED)
         } catch (e: Exception) {
-            ResponseEntity(mapOf("error" to e), HttpStatus.CREATED)
+            ResponseEntity(mapOf("error" to e.message!!), HttpStatus.UNPROCESSABLE_ENTITY)
         }
     }
 }

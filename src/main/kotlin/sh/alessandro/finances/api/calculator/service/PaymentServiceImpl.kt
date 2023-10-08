@@ -3,44 +3,80 @@ package sh.alessandro.finances.api.calculator.service
 import org.springframework.stereotype.Service
 import sh.alessandro.finances.api.calculator.domain.models.Payment
 import sh.alessandro.finances.api.calculator.domain.models.Plan
-import sh.alessandro.finances.api.calculator.domain.service.CalculatorService
+import sh.alessandro.finances.api.calculator.domain.repositories.PaymentRepository
 import sh.alessandro.finances.api.calculator.domain.service.PaymentService
+import java.util.*
 
 @Service
 class PaymentServiceImpl(
-    private val calculator: CalculatorService
+    private val paymentRepository: PaymentRepository,
 ) : PaymentService {
-    override fun createPayments(plan: Plan): List<Payment> {
-        var periods = plan.loan?.term?.toInt()
-        var payments = mutableListOf<Payment>()
+    override fun getOne(id: UUID): Payment {
+        return paymentRepository.findById(id).orElseThrow()
+    }
 
+    override fun createMany(plan: Plan): List<Payment> {
+        val payments = this.buildMany(plan)
+        return paymentRepository.saveAll(payments)
+    }
+
+    override fun buildMany(plan: Plan) : List<Payment> {
+        val periods = plan.loan?.term?.toInt()!!
+        val payments = mutableListOf<Payment>()
+
+        // The first payment is calculated from the initial balance
         payments.add(this.buildFirstPayment(plan, plan.postage))
 
+        for (i in 2..periods) {
+            val prevPayment = payments.lastOrNull()
+            val interest = prevPayment?.balance!! * plan.monthlyRate()
+            val lifeInsurance = plan.lifeInsurance() * prevPayment.balance
+            val carInsurance = plan.carInsurance() * plan.loan!!.totalAmount
+
+            val amortization = plan.monthlyPayment() - interest - lifeInsurance - carInsurance - plan.postage
+            var balance = prevPayment.balance - amortization
+
+            if (balance < 0.001) {
+                balance = 0.0
+            }
+
+            payments.add(
+                Payment(
+                    null,
+                    i,
+                    prevPayment.paymentDate.plusMonths(1),
+                    amortization,
+                    interest,
+                    lifeInsurance,
+                    carInsurance,
+                    plan.postage,
+                    balance,
+                    plan = plan
+                )
+            )
+        }
         return payments
     }
-
-    fun getPrevPayment(plan: Plan, index: Int): Payment? {
-        return plan.payments.lastOrNull()
-    }
-
-    fun buildFirstPayment(plan: Plan, postage: Double): Payment {
+    override fun buildFirstPayment(plan: Plan, postage: Double): Payment {
         val loan = plan.loan!!
-        val interest = calculator.calcInterest(
-            loan.totalDebt(),
-            plan.monthlyRate()
-        )
+        val interest = loan.totalDebt() * plan.monthlyRate()
+        val lifeInsurance = plan.lifeInsurance() * loan.totalDebt()
+        val carInsurance = plan.carInsurance() * loan.totalAmount
+
+        val amortization = plan.monthlyPayment() - interest - lifeInsurance - carInsurance - plan.postage
+        val balance = loan.totalDebt() - amortization
 
         return Payment(
-            number = 1,
-            // payment date will be plan.loan.date + 30 days
-            paymentDate = loan.date,
-            amortization = 0.0,
-            interest = interest,
-            lifeInsurance = 18000.00 * 0.015 / 100,
-            carInsurance = loan.totalAmount * 0.10 / 100,
-            postage = postage,
-            balance = 0.0,
+            null,
+            1,
+            loan.date.plusMonths(1),
+            amortization,
+            interest,
+            lifeInsurance,
+            carInsurance,
+            plan.postage,
+            balance,
+            plan = plan
         )
     }
-
 }

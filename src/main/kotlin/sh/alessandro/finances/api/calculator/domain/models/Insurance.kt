@@ -23,6 +23,7 @@ data class Insurance(
     var percentage: Double? = null,
 
     @Column(name = "created_at")
+    @JsonIgnore
     var createdAt: Date = Date(),
 
     @ManyToOne()

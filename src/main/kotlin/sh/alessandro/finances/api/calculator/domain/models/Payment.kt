@@ -1,5 +1,6 @@
 package sh.alessandro.finances.api.calculator.domain.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
@@ -45,5 +46,6 @@ data class Payment (
     // Relationships
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id")
+    @JsonIgnore
     var plan: Plan? = null,
 )
