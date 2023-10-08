@@ -15,19 +15,15 @@ class PlansController(
     private val planService: PlanService,
     private val paymentService: PaymentService
 ) {
-
     @GetMapping("/{id}")
-    fun getPlan(@PathVariable id: UUID): ResponseEntity<Map<String, Any>> {
+    fun getPlan(@PathVariable id: UUID): ResponseEntity<Map<String, ShowPlanDto>> {
         return try {
             ResponseEntity(
                 mapOf("plan" to ShowPlanDto(planService.getOne(id)))
                 , HttpStatus.OK
             )
         } catch (e: Exception) {
-            ResponseEntity(
-                mapOf("message" to "resource not found")
-                , HttpStatus.NOT_FOUND
-            )
+            ResponseEntity.notFound().build()
         }
     }
 
@@ -46,7 +42,7 @@ class PlansController(
     @PostMapping()
     fun createPlan(@RequestBody payload: EntryDataDto): ResponseEntity<Map<String, Any>> {
         return try {
-            val plan = planService.saveOneFromEntryData(payload)
+            val plan = planService.saveOne(payload)
             ResponseEntity(mapOf("plan" to plan), HttpStatus.CREATED)
         } catch (e: Exception) {
             ResponseEntity(mapOf("error" to e), HttpStatus.UNPROCESSABLE_ENTITY)

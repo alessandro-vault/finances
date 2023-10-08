@@ -62,7 +62,7 @@ data class Plan(
 
     fun irr(): Double {
         return Irr.irr(
-            Array(25) {
+            Array((loan!!.term + 1u).toInt()) {
                 if (it == 0) this.loan?.totalDebt()!! else -this.monthlyPayment()
             }.toDoubleArray()
         )

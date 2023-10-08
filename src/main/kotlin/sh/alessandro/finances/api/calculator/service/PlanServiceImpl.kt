@@ -27,7 +27,7 @@ class PlanServiceImpl(
         return planRepository.save(plan)
     }
 
-    override fun saveOneFromEntryData(payload: EntryDataDto): Plan {
+    override fun saveOne(payload: EntryDataDto): Plan {
         val loan = payload.getLoan()
 
         val plan = Plan(postage = payload.postage)

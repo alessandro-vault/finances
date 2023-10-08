@@ -11,9 +11,9 @@ import sh.alessandro.finances.api.calculator.domain.models.Loan
 import sh.alessandro.finances.api.calculator.shared.Util.Companion.convertDate
 
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 data class EntryDataDto(
     @JsonProperty("loanAmount")
     @NotNull

@@ -13,7 +13,6 @@ import sh.alessandro.finances.api.calculator.domain.service.LoanService
 class LoansController(
     private val loanService: LoanService
 ) {
-
     @GetMapping("{id}")
     fun getLoan(@PathVariable id: Long) : ResponseEntity<Loan> {
         return try {

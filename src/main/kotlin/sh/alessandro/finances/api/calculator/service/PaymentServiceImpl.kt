@@ -1,5 +1,7 @@
 package sh.alessandro.finances.api.calculator.service
 
+import lombok.AllArgsConstructor
+import lombok.NoArgsConstructor
 import org.springframework.stereotype.Service
 import sh.alessandro.finances.api.calculator.domain.models.Payment
 import sh.alessandro.finances.api.calculator.domain.models.Plan
@@ -8,6 +10,8 @@ import sh.alessandro.finances.api.calculator.domain.service.PaymentService
 import java.util.*
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 class PaymentServiceImpl(
     private val paymentRepository: PaymentRepository,
 ) : PaymentService {
@@ -28,14 +32,15 @@ class PaymentServiceImpl(
         payments.add(this.buildFirstPayment(plan, plan.postage))
 
         for (i in 2..periods) {
-            val prevPayment = payments.lastOrNull()
-            val interest = prevPayment?.balance!! * plan.monthlyRate()
-            val lifeInsurance = plan.lifeInsurance() * prevPayment.balance
-            val carInsurance = plan.carInsurance() * plan.loan!!.totalAmount
+            val prevPayment : Payment = payments.last()
+            val interest : Double = prevPayment?.balance!! * plan.monthlyRate()
+            val lifeInsurance : Double = plan.lifeInsurance() * prevPayment.balance
+            val carInsurance : Double = plan.carInsurance() * plan.loan!!.totalAmount
 
-            val amortization = plan.monthlyPayment() - interest - lifeInsurance - carInsurance - plan.postage
-            var balance = prevPayment.balance - amortization
+            val amortization : Double = plan.monthlyPayment() - interest - lifeInsurance - carInsurance - plan.postage
+            var balance : Double = prevPayment.balance - amortization
 
+            // if the remaining balance is less than 0.001, it is considered 0
             if (balance < 0.001) {
                 balance = 0.0
             }

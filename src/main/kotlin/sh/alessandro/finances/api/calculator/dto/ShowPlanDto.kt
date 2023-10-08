@@ -1,8 +1,14 @@
 package sh.alessandro.finances.api.calculator.dto
 
+import lombok.AllArgsConstructor
+import lombok.Data
+import lombok.NoArgsConstructor
 import sh.alessandro.finances.api.calculator.domain.models.Plan
 import kotlin.math.pow
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 class ShowPlanDto(val plan: Plan) {
     val id = plan.id
     private val loanValue = plan.loan?.totalAmount

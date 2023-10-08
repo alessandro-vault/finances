@@ -7,5 +7,5 @@ import java.util.*
 interface PlanService {
     fun getOne(id: UUID): Plan
     fun saveOne(plan: Plan): Plan
-    fun saveOneFromEntryData(payload: EntryDataDto): Plan
+    fun saveOne(payload: EntryDataDto): Plan
 }
