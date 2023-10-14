@@ -17,10 +17,8 @@ class ShowPlanDto(private val plan: Plan) {
     val loan = plan.loan
     val payments = plan.payments
 
-    @JsonIgnore
     fun getStats() : Map<String, Any> {
         return mapOf(
-            "id" to id!!,
             "totalAmount" to loanValue!!,
             "downPaymentPercentage" to "${plan.loan!!.downPaymentPercentage}%",
             "downPayment" to plan.loan!!.downPaymentAmount(),
