@@ -1,5 +1,6 @@
 package sh.alessandro.finances.api.calculator.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import lombok.AllArgsConstructor
 import lombok.Data
 import lombok.NoArgsConstructor
@@ -9,12 +10,14 @@ import kotlin.math.pow
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class ShowPlanDto(val plan: Plan) {
+class ShowPlanDto(private val plan: Plan) {
     val id = plan.id
-    private val loanValue = plan.loan?.totalAmount
-    val downPayment = plan.loan!!.downPaymentPercentage
+    @JsonIgnore
+    val loanValue = plan.loan?.totalAmount
+    val loan = plan.loan
     val payments = plan.payments
 
+    @JsonIgnore
     fun getStats() : Map<String, Any> {
         return mapOf(
             "id" to id!!,

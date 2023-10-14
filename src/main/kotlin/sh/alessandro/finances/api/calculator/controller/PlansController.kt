@@ -18,8 +18,10 @@ class PlansController(
     @GetMapping("/{id}")
     fun getPlan(@PathVariable id: UUID): ResponseEntity<Map<String, ShowPlanDto>> {
         return try {
+            val plan = planService.getOne(id)
+            println(plan.payments.size)
             ResponseEntity(
-                mapOf("plan" to ShowPlanDto(planService.getOne(id)))
+                mapOf("plan" to ShowPlanDto(plan))
                 , HttpStatus.OK
             )
         } catch (e: Exception) {
@@ -54,7 +56,7 @@ class PlansController(
         return try {
             val plan = planService.getOne(id)
             if (plan.payments.isNotEmpty()) {
-                ResponseEntity(mapOf("payments" to plan.payments), HttpStatus.OK)
+                throw Exception("Payments are already created")
             }
             val payments = paymentService.createMany(plan)
             ResponseEntity(mapOf("payments" to payments), HttpStatus.CREATED)
