@@ -32,6 +32,7 @@ Environment Variables:
 | DATABASE_NAME | The name of the database |
 | DATABASE_USERNAME | The username of the database |
 | DATABASE_PASSWORD | The password of the database |
+| DATABASE_NAME | The name of the database |
 | SECRET_KEY | The secret key used for JWT |
 
 To install the necessary dependencies, run the following command:
