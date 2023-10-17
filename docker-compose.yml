@@ -1,14 +1,14 @@
 version: '3.8'
 services:
   db:
-    image: mysql:8.0.26
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: finances
       MYSQL_USER: test
       MYSQL_PASSWORD: test
     ports:
-      - 3306:3306
+      - "3306:3306"
   app:
     build:
       context: .
@@ -21,7 +21,7 @@ services:
       - SECRET_KEY=14a7ccc14caec5c362a1d272dded9a3b9f7a85fcb005a8f8c3f49c8814be6b7c
       - spring_profiles_active=dev
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       - db
     volumes:
