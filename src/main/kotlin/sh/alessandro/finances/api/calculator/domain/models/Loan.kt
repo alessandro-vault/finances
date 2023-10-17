@@ -52,11 +52,6 @@ data class Loan(
     var createdAt: LocalDate = LocalDate.now(),
 
     //Relationships
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
-    @JsonIgnore
-    var client: Client? = null,
-
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "plan_id")
     @JsonIgnore

@@ -1,7 +1,5 @@
 package sh.alessandro.finances.api.calculator.service
 
-import lombok.AllArgsConstructor
-import lombok.NoArgsConstructor
 import org.springframework.stereotype.Service
 import sh.alessandro.finances.api.calculator.domain.models.Payment
 import sh.alessandro.finances.api.calculator.domain.models.Plan
@@ -10,13 +8,17 @@ import sh.alessandro.finances.api.calculator.domain.service.PaymentService
 import java.util.*
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 class PaymentServiceImpl(
     private val paymentRepository: PaymentRepository,
 ) : PaymentService {
     override fun getOne(id: UUID): Payment {
         return paymentRepository.findById(id).orElseThrow()
+    }
+
+    override fun getFromPlan(plan: Plan): List<Payment> {
+        return paymentRepository.getAllByPlan(plan).sortedBy { payment ->
+            payment.number
+        }
     }
 
     override fun createMany(plan: Plan): List<Payment> {
@@ -33,7 +35,7 @@ class PaymentServiceImpl(
 
         for (i in 2..periods) {
             val prevPayment : Payment = payments.last()
-            val interest : Double = prevPayment?.balance!! * plan.monthlyRate()
+            val interest : Double = prevPayment.balance * plan.monthlyRate()
             val lifeInsurance : Double = plan.lifeInsurance() * prevPayment.balance
             val carInsurance : Double = plan.carInsurance() * plan.loan!!.totalAmount
 

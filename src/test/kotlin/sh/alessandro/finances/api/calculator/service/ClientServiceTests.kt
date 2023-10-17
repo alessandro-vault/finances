@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import sh.alessandro.finances.api.calculator.domain.models.Client
 import sh.alessandro.finances.api.calculator.domain.repositories.ClientRepository
-import sh.alessandro.finances.api.calculator.dto.NewClientDto
+import sh.alessandro.finances.api.calculator.dto.request.RegisterClientDto
 import sh.alessandro.finances.api.security.domain.models.User
+import sh.alessandro.finances.api.security.domain.service.HashService
 import sh.alessandro.finances.api.security.domain.service.UserService
+import sh.alessandro.finances.api.security.service.TokenServiceImpl
 import java.util.*
 
 class ClientServiceTests {
@@ -18,8 +20,10 @@ class ClientServiceTests {
 
         val userService = mockk<UserService>()
         val clientRepository = mockk<ClientRepository>()
-        val clientService = ClientServiceImpl(clientRepository, userService)
-        val clientDto = NewClientDto("testuser", "testpassword", "John", "Doe")
+        val hashService = mockk<HashService>()
+        val tokenService = mockk<TokenServiceImpl>()
+        val clientService = ClientServiceImpl(clientRepository, userService, hashService, tokenService)
+        val clientDto = RegisterClientDto("testuser", "testpassword", "John", "Doe")
 
         val userId = UUID.randomUUID()
         val savedUser = User(
@@ -36,11 +40,13 @@ class ClientServiceTests {
         )
 
         // Arrange
+        every { userService.existsByUsername(any(String::class)) } returns false
         every { userService.saveOne(any(User::class)) } returns savedUser
         every { clientRepository.save(any(Client::class)) } returns savedClient
+        every { hashService.hashBcrypt(any(String::class)) } returns "hashedPassword"
 
         // Act
-        val createdClient = clientService.create(clientDto)
+        val createdClient = clientService.register(clientDto)
 
         verify { userService.saveOne(any(User::class)) }
         verify { clientRepository.save(any(Client::class)) }

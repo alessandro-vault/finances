@@ -1,4 +1,4 @@
-package sh.alessandro.finances.api.calculator.dto
+package sh.alessandro.finances.api.calculator.dto.request
 
 import lombok.AllArgsConstructor
 import lombok.Data

@@ -6,6 +6,7 @@ import java.util.*
 
 interface PaymentService {
     fun getOne(id: UUID) : Payment
+    fun getFromPlan(plan: Plan) : List<Payment>
     fun createMany(plan: Plan): List<Payment>
     fun buildMany(plan: Plan) : List<Payment>
     fun buildFirstPayment(plan: Plan, postage: Double): Payment

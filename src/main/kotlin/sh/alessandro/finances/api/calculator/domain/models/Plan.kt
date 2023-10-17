@@ -27,6 +27,11 @@ data class Plan(
     var createdAt: Date = Date(),
 
     // Relationships
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    @JsonIgnore
+    var client: Client? = null,
+
     @OneToMany(mappedBy = "plan", cascade = [CascadeType.ALL], orphanRemoval = true)
     var insurances: List<Insurance> = listOf(),
 

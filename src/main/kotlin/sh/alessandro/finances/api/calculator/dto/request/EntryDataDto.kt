@@ -1,4 +1,4 @@
-package sh.alessandro.finances.api.calculator.dto
+package sh.alessandro.finances.api.calculator.dto.request
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotNull

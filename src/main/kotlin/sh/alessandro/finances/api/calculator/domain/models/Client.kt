@@ -20,15 +20,14 @@ data class Client(
     var firstName : String,
 
     @Column(name = "last_name")
-    @NotNull
-    var lastName : String,
+    var lastName : String?,
 
     @OneToOne()
     @JoinColumn(name = "user_id")
-    var user : User? = null,
+    var user : User,
 
-    @OneToMany(mappedBy = "client")
-    var loans : List<Loan> = emptyList()
+    @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var plans: List<Plan> = emptyList()
 ) {
     fun fullName() : String {
         return "$firstName $lastName"

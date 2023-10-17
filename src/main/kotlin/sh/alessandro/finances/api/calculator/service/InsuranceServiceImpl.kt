@@ -1,7 +1,5 @@
 package sh.alessandro.finances.api.calculator.service
 
-import lombok.AllArgsConstructor
-import lombok.NoArgsConstructor
 import org.springframework.stereotype.Service
 import sh.alessandro.finances.api.calculator.domain.models.Insurance
 import sh.alessandro.finances.api.calculator.domain.repositories.InsuranceRepository
@@ -9,8 +7,6 @@ import sh.alessandro.finances.api.calculator.domain.service.InsuranceService
 import java.util.*
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 class InsuranceServiceImpl(
     private val insuranceRepository: InsuranceRepository
 ) : InsuranceService {

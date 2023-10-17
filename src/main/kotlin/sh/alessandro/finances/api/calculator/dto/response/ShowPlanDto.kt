@@ -1,4 +1,4 @@
-package sh.alessandro.finances.api.calculator.dto
+package sh.alessandro.finances.api.calculator.dto.response
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import lombok.AllArgsConstructor
@@ -15,7 +15,8 @@ class ShowPlanDto(private val plan: Plan) {
     @JsonIgnore
     val loanValue = plan.loan?.totalAmount
     val loan = plan.loan
-    val payments = plan.payments
+    val payments = plan.payments.sortedBy { it.number }
+    val clientId = plan.client?.id
 
     fun getStats() : Map<String, Any> {
         return mapOf(
