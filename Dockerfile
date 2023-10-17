@@ -1,11 +1,17 @@
-FROM openjdk:17-jdk-slim
+FROM gradle:8.4.0-jdk17-focal as BUILD
 
 WORKDIR /app
 
-COPY . .
+COPY build.gradle.kts settings.gradle.kts /app/
+COPY src /app/src
 
-RUN ./gradlew build
+RUN gradle build --no-daemon
 
-COPY src ./src
+FROM amazoncorretto:17-alpine-jdk
+WORKDIR /app
 
-CMD ["./gradlew", "bootRun"]
+COPY --from=BUILD /app/build/libs/finances-1.jar .
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "finances-1.jar"]
