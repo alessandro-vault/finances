@@ -6,7 +6,6 @@ import sh.alessandro.finances.api.calculator.dto.request.EntryDataDto
 import java.util.*
 
 interface PlanService {
-    fun getMany(client: Client): List<Plan>
     fun getOne(id: UUID): Plan
     fun saveOne(plan: Plan): Plan
     fun saveOne(payload: EntryDataDto, client: Client): Plan

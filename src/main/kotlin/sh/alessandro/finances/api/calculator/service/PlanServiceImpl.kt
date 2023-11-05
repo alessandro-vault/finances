@@ -4,22 +4,14 @@ import org.springframework.stereotype.Service
 import sh.alessandro.finances.api.calculator.domain.models.Client
 import sh.alessandro.finances.api.calculator.domain.models.Plan
 import sh.alessandro.finances.api.calculator.domain.repositories.PlanRepository
-import sh.alessandro.finances.api.calculator.domain.service.ClientService
 import sh.alessandro.finances.api.calculator.domain.service.PlanService
 import sh.alessandro.finances.api.calculator.dto.request.EntryDataDto
-import sh.alessandro.finances.api.security.domain.service.TokenService
 import java.util.*
 
 @Service
 class PlanServiceImpl(
-    private val planRepository: PlanRepository,
-    private val clientService: ClientService,
-    private val tokenService: TokenService
+    private val planRepository: PlanRepository
 ) : PlanService {
-    override fun getMany(client: Client): List<Plan> {
-        return planRepository.findByClient(client)
-    }
-
     override fun getOne(id: UUID): Plan {
         return planRepository.findById(id).orElseThrow()
     }

@@ -40,6 +40,7 @@ data class Payment (
     @Column(name = "balance")
     var balance: Double,
 
+    @JsonIgnore
     @Column(name = "created_at")
     var createdAt: Date = Date(),
 

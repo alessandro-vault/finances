@@ -3,6 +3,7 @@ package sh.alessandro.finances.api.security.domain.models
 import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
+import sh.alessandro.finances.api.security.domain.enums.UserRole
 import java.util.*
 
 @Entity
@@ -19,6 +20,9 @@ data class User (
 
     @Column(nullable = false)
     var password: String = "",
+
+    @Column(nullable = false)
+    var role: UserRole = UserRole.USER,
 
     @Column(name = "created_at")
     var createdAt: Date = Date(),

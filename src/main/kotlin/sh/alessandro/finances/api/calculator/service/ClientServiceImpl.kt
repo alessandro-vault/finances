@@ -23,8 +23,8 @@ class ClientServiceImpl(
         return clientRepository.findById(id).orElseThrow()
     }
 
-    override fun findByUsername(username: String): Client? {
-        return clientRepository.findByUserUsername(username)
+    override fun findByUser(user: User): Client? {
+        return clientRepository.findByUser(user)
     }
 
     override fun findByToken(token: String): Client? {

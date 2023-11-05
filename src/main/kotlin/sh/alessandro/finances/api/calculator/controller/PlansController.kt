@@ -5,11 +5,13 @@ import lombok.NoArgsConstructor
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import sh.alessandro.finances.api.calculator.domain.service.ClientService
 import sh.alessandro.finances.api.calculator.domain.service.PlanService
 import sh.alessandro.finances.api.calculator.dto.request.EntryDataDto
 import sh.alessandro.finances.api.calculator.dto.response.ShowPlanDto
+import sh.alessandro.finances.api.security.domain.models.User
 import java.util.*
 
 @RestController
@@ -22,11 +24,11 @@ class PlansController(
     @GetMapping()
     fun getAllPlans(request: HttpServletRequest): ResponseEntity<Any> {
         return try {
-            val client = clientService.findByToken(
-                request.getHeader("Authorization")!!.replace("Bearer ", "")
-            ) ?: throw NotFoundException()
+            val client =
+                clientService.findByUser(SecurityContextHolder.getContext().authentication.principal as User)
+                    ?: throw NotFoundException()
 
-            val plans = planService.getMany(client)
+            val plans = client.plans.map { ShowPlanDto(it) }
             ResponseEntity(plans, HttpStatus.OK)
         } catch (e: Exception) {
             ResponseEntity.notFound().build()
@@ -40,8 +42,7 @@ class PlansController(
         return try {
             val plan = planService.getOne(id)
             ResponseEntity(
-                mapOf("plan" to ShowPlanDto(plan))
-                , HttpStatus.OK
+                mapOf("plan" to ShowPlanDto(plan)), HttpStatus.OK
             )
         } catch (e: Exception) {
             ResponseEntity.notFound().build()
