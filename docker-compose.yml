@@ -20,6 +20,7 @@ services:
       - DATABASE_NAME=finances
       - SECRET_KEY=14a7ccc14caec5c362a1d272dded9a3b9f7a85fcb005a8f8c3f49c8814be6b7c
       - spring_profiles_active=dev
+    restart: on-failure
     ports:
       - "8080:8080"
     depends_on:
