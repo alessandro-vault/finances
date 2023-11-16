@@ -15,6 +15,10 @@ import sh.alessandro.finances.api.calculator.shared.Util.Companion.convertDate
 @NoArgsConstructor
 @AllArgsConstructor
 data class EntryDataDto(
+    @JsonProperty("title")
+    @NotNull
+    val title: String,
+
     @JsonProperty("loanAmount")
     @NotNull
     val loanAmount: Double,

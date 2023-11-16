@@ -12,11 +12,10 @@ import kotlin.math.pow
 @AllArgsConstructor
 class ShowPlanDto(private val plan: Plan) {
     val id = plan.id
+    val title = plan.title
     @JsonIgnore
     val loanValue = plan.loan?.totalAmount
     val loan = plan.loan
-    val payments = plan.payments.sortedBy { it.number }
-    val clientId = plan.client?.id
 
     fun getStats() : Map<String, Any> {
         return mapOf(

@@ -9,4 +9,5 @@ interface PlanService {
     fun getOne(id: UUID): Plan
     fun saveOne(plan: Plan): Plan
     fun saveOne(payload: EntryDataDto, client: Client): Plan
+    fun deleteOne(id: UUID)
 }

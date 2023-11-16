@@ -27,12 +27,6 @@ class ClientServiceImpl(
         return clientRepository.findByUser(user)
     }
 
-    override fun findByToken(token: String): Client? {
-        return clientRepository.findByUserUsername(
-            tokenService.parseToken(token.replace("Bearer ", ""))!!.username
-        )
-    }
-
     override fun login(username: String, password: String): LoginResponseDto {
         val client = clientRepository.findByUserUsername(username) ?: throw ApiException(400, "Login failed")
 

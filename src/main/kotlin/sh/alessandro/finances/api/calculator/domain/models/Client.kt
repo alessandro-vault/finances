@@ -1,5 +1,6 @@
 package sh.alessandro.finances.api.calculator.domain.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import lombok.AllArgsConstructor
@@ -26,6 +27,7 @@ data class Client(
     @JoinColumn(name = "user_id")
     var user : User,
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL], orphanRemoval = true)
     var plans: List<Plan> = emptyList()
 ) {

@@ -28,7 +28,11 @@ class PlansController(
                 clientService.findByUser(SecurityContextHolder.getContext().authentication.principal as User)
                     ?: throw NotFoundException()
 
-            val plans = client.plans.map { ShowPlanDto(it) }
+            val plans = client.plans.sortedBy { plan ->
+                plan.createdAt
+            }.map { plan ->
+                ShowPlanDto(plan)
+            }
             ResponseEntity(plans, HttpStatus.OK)
         } catch (e: Exception) {
             ResponseEntity.notFound().build()
@@ -52,9 +56,9 @@ class PlansController(
     @PostMapping()
     fun createPlan(request: HttpServletRequest, @RequestBody payload: EntryDataDto): ResponseEntity<Any> {
         return try {
-            val client = clientService.findByToken(
-                request.getHeader("Authorization")!!.replace("Bearer ", "")
-            ) ?: throw NotFoundException()
+            val client =
+                clientService.findByUser(SecurityContextHolder.getContext().authentication.principal as User)
+                    ?: throw NotFoundException()
 
             val plan = planService.saveOne(payload, client)
 
@@ -63,6 +67,16 @@ class PlansController(
             ResponseEntity(mapOf("error" to e), HttpStatus.UNPROCESSABLE_ENTITY)
         } catch (e: NotFoundException) {
             ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED)
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    fun deletePlan(@PathVariable id: UUID): ResponseEntity<Any> {
+        return try {
+            planService.deleteOne(id)
+            ResponseEntity(HttpStatus.NO_CONTENT)
+        } catch (e: Exception) {
+            ResponseEntity.notFound().build()
         }
     }
 }

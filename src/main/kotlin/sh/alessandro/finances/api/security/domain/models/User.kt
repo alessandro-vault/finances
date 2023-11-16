@@ -1,5 +1,6 @@
 package sh.alessandro.finances.api.security.domain.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
@@ -19,6 +20,7 @@ data class User (
     var username: String = "",
 
     @Column(nullable = false)
+    @JsonIgnore
     var password: String = "",
 
     @Column(nullable = false)

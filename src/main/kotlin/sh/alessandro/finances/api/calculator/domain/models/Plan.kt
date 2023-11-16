@@ -19,6 +19,9 @@ data class Plan(
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
+    @Column(name = "title")
+    var title: String = "",
+
     @Column(name = "postage")
     @JsonIgnore
     var postage: Double,

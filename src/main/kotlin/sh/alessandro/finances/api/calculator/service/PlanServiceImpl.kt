@@ -23,13 +23,19 @@ class PlanServiceImpl(
     override fun saveOne(payload: EntryDataDto, client: Client): Plan {
         val loan = payload.getLoan()
 
-        val plan = Plan(postage = payload.postage)
-
+        val plan = Plan(
+            postage = payload.postage,
+        )
+        plan.title = payload.title
         plan.loan = loan
         loan.plan = plan
         plan.insurances = payload.insurances.map { it.toInsurance(plan) }
         plan.client = client
 
         return planRepository.save(plan)
+    }
+
+    override fun deleteOne(id: UUID) {
+        planRepository.deleteById(id)
     }
 }

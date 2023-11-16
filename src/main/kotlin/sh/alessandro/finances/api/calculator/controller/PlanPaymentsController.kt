@@ -9,7 +9,7 @@ import sh.alessandro.finances.api.calculator.domain.service.PlanService
 import java.util.*
 
 @RestController
-@RequestMapping("api/v1/plan/{planId}/payments")
+@RequestMapping("api/v1/plans/{planId}/payments")
 class PlanPaymentsController(
     val planService: PlanService,
     val paymentService: PaymentService
