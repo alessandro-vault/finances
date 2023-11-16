@@ -13,6 +13,7 @@ import kotlin.math.pow
 class ShowPlanDto(private val plan: Plan) {
     val id = plan.id
     val title = plan.title
+    val payments = plan.payments
     @JsonIgnore
     val loanValue = plan.loan?.totalAmount
     val loan = plan.loan
