@@ -31,19 +31,19 @@ data class EntryDataDto(
     @NotNull
     val interestRate: Double,
 
-    @JsonProperty("loanTerm")
-    @NotNull
-    val loanTerm: Int,
-
     @JsonProperty("rateType")
     @NotNull
     val rateType: RateType,
+
+    @JsonProperty("loanTerm")
+    @NotNull
+    val loanTerm: Int,
 
     @JsonProperty("currency")
     @NotNull
     val currency: Currency,
 
-    @JsonProperty("portage")
+    @JsonProperty("postage")
     @NotNull
     val postage: Double,
 
@@ -52,7 +52,7 @@ data class EntryDataDto(
     val loanDate: String,
 
     @JsonProperty("insurances")
-    val insurances: List<InsuranceDto>,
+    val insurances: List<InsuranceDto> = listOf(),
 ) {
     fun getLoan() : Loan {
         return Loan(

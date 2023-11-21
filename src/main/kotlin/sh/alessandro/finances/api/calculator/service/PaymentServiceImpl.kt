@@ -11,17 +11,13 @@ import java.util.*
 class PaymentServiceImpl(
     private val paymentRepository: PaymentRepository,
 ) : PaymentService {
-    override fun getOne(id: UUID): Payment {
-        return paymentRepository.findById(id).orElseThrow()
-    }
+    override fun getOne(id: UUID): Payment =
+        paymentRepository.findById(id).orElseThrow()
 
-    override fun getFromPlan(plan: Plan): List<Payment> {
-        return paymentRepository.getAllByPlan(plan).sortedBy { payment ->
-            payment.number
-        }
-    }
+    override fun getFromPlan(plan: Plan): List<Payment> =
+        paymentRepository.getAllByPlan(plan).sortedBy { it.number }
 
-    override fun createMany(plan: Plan): List<Payment> {
+        override fun createMany(plan: Plan): List<Payment> {
         val payments = this.buildMany(plan)
         return paymentRepository.saveAll(payments)
     }
@@ -43,9 +39,7 @@ class PaymentServiceImpl(
             var balance : Double = prevPayment.balance - amortization
 
             // if the remaining balance is less than 0.001, it is considered 0
-            if (balance < 0.001) {
-                balance = 0.0
-            }
+            if (balance < 0.001) balance = 0.0
 
             payments.add(
                 Payment(

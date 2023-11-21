@@ -16,7 +16,7 @@ data class InsuranceDto(
 ) {
     fun toInsurance(plan: Plan? = null) : Insurance {
         return Insurance(
-            percentage = this.percentage,
+            percentage = this.percentage ?: 0.0,
             type = this.type,
             plan = plan
         )

@@ -12,7 +12,6 @@ services:
   app:
     build:
       context: .
-      dockerfile: src/main/resources/docker/dev.Dockerfile
     environment:
       - DATABASE_HOST=db
       - DATABASE_USERNAME=root
