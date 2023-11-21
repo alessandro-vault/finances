@@ -78,16 +78,16 @@ class PlansControllersTests {
                     "rateType": "EFFECTIVE",
                     "loanTerm": 24,
                     "currency": "PEN",
-                    "portage": 5.0,
+                    "postage": 5.0,
                     "loanDate": "2023-08-10",
                     "insurances": [
                         {
                             "type": "LIFE",
-                            "percentage": 0.015
+                            "percentage": 0.00015
                         },
                         {
                             "type": "CAR",
-                            "percentage": 0.1
+                            "percentage": 0.001
                         }
                     ]
                 }

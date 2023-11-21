@@ -51,7 +51,7 @@ data class Plan(
     }
 
     fun monthlyPayment(): Double {
-        return FinanceLib.pmt(
+            return FinanceLib.pmt(
             this.monthlyRate() + this.lifeInsurance(),
             this.loan?.term!!.toDouble(),
             -this.loan?.totalDebt()!!,
@@ -61,17 +61,25 @@ data class Plan(
     }
 
     fun lifeInsurance(): Double {
-        return this.insurances.find { it.type == InsuranceType.LIFE }?.percentage!!
+        return try {
+            this.insurances.find { it.type == InsuranceType.LIFE }?.percentage!!
+        } catch (e: NullPointerException) {
+            0.0
+        }
     }
 
     fun carInsurance(): Double {
-        return this.insurances.find { it.type == InsuranceType.CAR }?.percentage!!
+        return try {
+            this.insurances.find { it.type == InsuranceType.CAR }?.percentage!!
+        } catch (e: NullPointerException) {
+            0.0
+        }
     }
 
     fun irr(): Double {
         return Irr.irr(
             Array((loan!!.term + 1u).toInt()) {
-                if (it == 0) this.loan?.totalDebt()!! else -this.monthlyPayment()
+                if (it == 0) this.loan?.totalDebt()!! else - this.monthlyPayment()
             }.toDoubleArray()
         )
     }

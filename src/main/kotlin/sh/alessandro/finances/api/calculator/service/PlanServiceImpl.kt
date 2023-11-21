@@ -29,7 +29,11 @@ class PlanServiceImpl(
         plan.title = payload.title
         plan.loan = loan
         loan.plan = plan
-        plan.insurances = payload.insurances.map { it.toInsurance(plan) }
+
+        if (payload.insurances.isNotEmpty()) {
+            plan.insurances = payload.insurances.map { it.toInsurance(plan) }
+        }
+
         plan.client = client
 
         return planRepository.save(plan)

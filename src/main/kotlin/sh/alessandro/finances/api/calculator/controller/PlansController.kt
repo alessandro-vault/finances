@@ -28,11 +28,10 @@ class PlansController(
                 clientService.findByUser(SecurityContextHolder.getContext().authentication.principal as User)
                     ?: throw NotFoundException()
 
-            val plans = client.plans.sortedBy { plan ->
-                plan.createdAt
-            }.map { plan ->
-                ShowPlanDto(plan)
-            }
+            val plans =
+                client.plans
+                    .sortedBy { it.createdAt }
+                    .map { plan -> ShowPlanDto(plan) }
             ResponseEntity(plans, HttpStatus.OK)
         } catch (e: Exception) {
             ResponseEntity.notFound().build()

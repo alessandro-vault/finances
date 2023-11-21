@@ -32,7 +32,8 @@ class ShowPlanDto(private val plan: Plan) {
             "carInsurance" to plan.carInsurance(),
             "postage" to plan.postage,
             "IRR" to plan.irr(),
-            "EAR" to ((1 + plan.irr()).pow(360.0 / 30) - 1)
+            "EAR" to ((1 + plan.irr()).pow(360.0 / 30) - 1),
+            "test" to plan.lifeInsurance()
         )
     }
 }
